@@ -37,8 +37,12 @@ export function errorHandler(
     return;
   }
 
-  if(err instanceof ResourceNotFoundError) {
-    res.status(404).json({ resourseId: "no-existe", message: "Document with id 'no-existe' not found" });
+  if (err instanceof ResourceNotFoundError) { // Handle missing resources with their actual requested identifier.
+    res.status(err.statusCode).json({ // Preserve the status selected by the resource error.
+      error: err.code, // Expose the stable not-found error code.
+      message: err.message, // Return the resource-specific message.
+      resourceId: err.resourceId, // Avoid a hard-coded identifier in the response.
+    }); // Return the not-found error details for the identifier that was actually requested.
     return;
   }
   

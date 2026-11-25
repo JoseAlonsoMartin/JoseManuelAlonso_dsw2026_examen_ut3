@@ -1,0 +1,13 @@
+meta {
+  name: Notices page beyond last
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://localhost:4000/api/v1/notices?page=100&limit=2
+}
+
+headers {
+  Accept: application/json
+}

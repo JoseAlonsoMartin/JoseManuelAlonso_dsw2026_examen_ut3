@@ -1,0 +1,19 @@
+meta {
+  name: Update notice description only
+  type: http
+  seq: 8
+}
+
+patch {
+  url: http://localhost:4000/api/v1/notices/22222222-2222-4222-8222-222222222221
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "description": "Descripción cambiada con PATCH parcial."
+  }
+}

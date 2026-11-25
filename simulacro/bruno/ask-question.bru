@@ -1,0 +1,19 @@
+meta {
+  name: Ask question
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:4000/api/v1/questions
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "question": "¿Cuándo se publica el próximo aviso?"
+  }
+}

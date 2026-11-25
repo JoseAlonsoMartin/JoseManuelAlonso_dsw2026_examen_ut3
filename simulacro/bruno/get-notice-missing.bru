@@ -1,0 +1,13 @@
+meta {
+  name: Get missing notice
+  type: http
+  seq: 12
+}
+
+get {
+  url: http://localhost:4000/api/v1/notices/no-existe
+}
+
+headers {
+  Accept: application/json
+}

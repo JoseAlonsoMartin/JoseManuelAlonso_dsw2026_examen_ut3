@@ -1,0 +1,20 @@
+meta {
+  name: Create notice
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:4000/api/v1/notices
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "Aviso de prueba",
+    "description": "Creado desde la colección Bruno."
+  }
+}

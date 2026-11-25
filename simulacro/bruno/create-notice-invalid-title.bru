@@ -1,0 +1,19 @@
+meta {
+  name: Create notice with invalid title
+  type: http
+  seq: 11
+}
+
+post {
+  url: http://localhost:4000/api/v1/notices
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "   "
+  }
+}

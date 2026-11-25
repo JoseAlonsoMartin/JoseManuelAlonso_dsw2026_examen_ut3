@@ -19,11 +19,10 @@ export interface ListNoticesParams {
 
 export interface PaginatedNotices {
   data: Notice[];
-  meta: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
+  pagination: { // Match the pagination envelope required by the notices API.
+    page: number; // Report the requested page.
+    limit: number; // Report the requested page size.
+    total: number; // Count matches before slicing the page.
   };
 }
 
@@ -62,18 +61,22 @@ const notices: Notice[] = [
 ];
 
 
-export function list(page: number, limit: number) {
-  const start = (page - 1) * limit;
+// GET /api/v1/notices?page=1&limit=2&search=examen: page selects the page, limit caps its notices, and search filters titles.
+export function list(page: number, limit: number, search = ''): PaginatedNotices { // Accept the optional title filter.
+  const normalizedSearch = search.trim().toLowerCase(); // Make title matching case-insensitive and ignore blank filters.
+  const filteredNotices = normalizedSearch
+    ? notices.filter((notice) => notice.title.toLowerCase().includes(normalizedSearch)) // Filter by title before counting and paging.
+    : notices; // Leave the full list unchanged when search is blank.
+  const start = (page - 1) * limit; // Convert the one-based page number to an array offset.
 
   return {
-    data: notices.slice(start, start + limit),
-    meta: {
-      page,
-      limit,
-      total: notices.length,
-      totalPages: Math.ceil(notices.length / limit),
-    },
-  };
+    data: filteredNotices.slice(start, start + limit), // Return an empty slice for pages beyond the last result.
+    pagination: { // Include the requested paging values and pre-pagination count.
+      page, // Echo the requested page.
+      limit, // Echo the requested page size.
+      total: filteredNotices.length, // Count only notices matching the title filter.
+    }, // Close the pagination values.
+  }; // Return the paginated, optionally filtered notices.
 }
 
 // Obtener documento por ID

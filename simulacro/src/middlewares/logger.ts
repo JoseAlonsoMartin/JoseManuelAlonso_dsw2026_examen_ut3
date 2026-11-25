@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 
+
 export function logger(req: Request, res: Response, next: NextFunction): void {
   const start = performance.now(); // Empieza a medir lo que tarda la petición
 

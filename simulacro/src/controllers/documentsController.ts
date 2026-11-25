@@ -2,6 +2,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import * as documentsService from '../services/documentsService.js';
 import { AppError } from '../errors/AppError.js';
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError.js';
 
 // Listar documentos
 export function list(req: Request, res: Response, next: NextFunction): void {
@@ -70,7 +71,19 @@ export function update(
   next: NextFunction,
 ): void {
   try {
-    const { title, description } = req.body;
+    const body = req.body ?? {};
+    const { title, description } = body;
+    
+    if ('title' in body) {
+    if (typeof title !== 'string' || title.trim() === '') {
+      res.status(400).json({
+          error: 'INVALID_TITLE',
+          message: 'Title must be a non-empty string',
+        
+          });
+          return;
+      }
+    }
 
     if (title !== undefined && typeof title !== 'string') {
       throw new AppError(400, 'Invalid title', 'BAD_REQUEST');
